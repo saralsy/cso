@@ -1,9 +1,28 @@
 #include <stdio.h>
+#include <stdarg.h>
 
 float globVariable = 3.14;
 // static variables persist within that function and will be stored in the function
+// not be destroyed when the function exits
+
+// variadic functions
+int add_nums(int count,...){
+  int result = 0;
+  va_list args;
+  va_start(args,count); //initialize argument list
+  for(int i = 0; i < count; ++i){
+    result += va_arg(args,int); // get the next int value
+  }
+  va_end(args); // clean up
+  return result;
+}
 
 
+void myFunc(void){
+  static int n = 0;
+  n++;
+  printf("myFunc has been called %d times so far\n", n);
+}
 
 void writeMessage(char name[], int n){
   printf("Hello, %s, %d\n", name, n);
@@ -17,6 +36,13 @@ int fib(int n){
 }
 
 int main(void) {
+  printf("%d\n", add_nums(4,25,25,50,50));
+
+
+  myFunc();
+  myFunc();
+  myFunc();
+
   int n = 10;
   int fibN = fib(n);
   printf("Fibonacci of %d is %d\n", n, fibN);
